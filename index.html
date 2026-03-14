@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Admin Page</title>
+<style>
+  body{margin:0;font-family:Arial;background:#000000;color:#111}
+  .wrap{max-width:1180px;margin:auto;padding:18px}
+  .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  h2,h3{margin:0 0 10px;color:#111}
+  label{font-size:12px;opacity:.85;display:block;margin:10px 0 6px}
+  input,select,textarea,button{
+    width:100%;padding:10px;border-radius:10px;border:1px solid #d1d5db;
+    background:#fff;color:#111;outline:none;box-sizing:border-box
+  }
+  input:focus,select:focus,textarea:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+  textarea{min-height:90px;resize:vertical}
+  .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  @media(max-width:900px){.row{grid-template-columns:1fr}}
+  button{background:#f6c10a;color:#000;font-weight:bold;cursor:pointer;border:none;margin-top:12px}
+  button:disabled{opacity:.6;cursor:not-allowed}
+
+.loginLogo{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-bottom:10px;
+}
+.loginLogo img{
+  height:52px;
+  width:auto;
+  display:block;
+}
+.topLogo{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin:12px 0 10px 0;
+}
+.topLogo img{
+  height:75px;
+  width:auto;
+  display:block;
+}
+
+#topLogo{display:none;}
+
+  .btn2{background:#f3f4f6;color:#111;border:1px solid #d1d5db;margin-top:8px}
+  .hint{font-size:12px;color:#374151;margin-top:6px;line-height:1.4}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .actions button{width:auto;padding:10px 12px;margin-top:0}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{border:1px solid #e5e7eb;padding:8px;font-size:12px;vertical-align:top}
+  th{background:#f9fafb;text-align:left}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  .pill{display:inline-block;padding:3px 8px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font-size:12px}
+  .gridCards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  @media(max-width:1100px){.gridCards{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:700px){.gridCards{grid-template-columns:repeat(2,1fr)}}
+  .dcard{border:1px solid #e5e7eb;border-radius:14px;padding:12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+  .dcard .t{font-size:12px;color:#374151;margin-bottom:6px}
+  .dcard .n{font-size:22px;font-weight:800}
+  .dcard .s{font-size:12px;color:#6b7280;margin-top:6px}
+
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px}
+  .box{width:min(420px,100%);background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;max-height: 90vh;overflow: auto;overflow-x:hidden;
+max-height:85vh;
+overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+  .box h3{margin:0 0 8px;color:#111}
+
+  /* ✅ DETAILS VIEW UPGRADE */
+  .dvTop{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .dvId{font-size:14px;font-weight:800}
+  .dvBadges{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .badge{display:inline-flex;gap:6px;align-items:center;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#f9fafb;font-size:12px}
+  .badge strong{font-weight:800}
+  .badge.ok{border-color:#d1fae5;background:#ecfdf5}
+  .badge.warn{border-color:#fde68a;background:#fffbeb}
+  .badge.danger{border-color:#fecaca;background:#fef2f2}
+  .dvGrid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+  @media(max-width:900px){.dvGrid{grid-template-columns:1fr}}
+  .dvCard{border:1px solid #e5e7eb;border-radius:14px;padding:12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.03)}
+  .dvCard h4{margin:0 0 8px;font-size:13px;color:#111}
+  .kv{display:grid;grid-template-columns:160px 1fr;gap:10px;font-size:13px}
+  @media(max-width:700px){.kv{grid-template-columns:1fr}}
+  .kv div:first-child{color:#374151;font-weight:bold}
+  .kv a{color:#2563eb;text-decoration:none;word-break:break-all}
+  .sec{border-top:1px dashed #e5e7eb;margin-top:12px;padding-top:12px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:900px){.two{grid-template-columns:1fr}}
+
+  /* ✅ PHOTO GRID */
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:10px;margin-top:10px}
+  .pitem{border:1px solid #e5e7eb;border-radius:14px;padding:10px;background:#fff}
+  .pitem .pt{font-size:12px;color:#374151;margin-bottom:8px;font-weight:700}
+  .thumb{width:100%;height:140px;object-fit:cover;border-radius:12px;border:1px solid #e5e7eb;background:#f9fafb}
+  .plink{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+  .plink a{color:#2563eb;text-decoration:none;font-size:12px}
+  .muted{color:#6b7280;font-size:12px}
+
+  /* ✅ VERSION UPDATE POPUP */
+  .vuWrap{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+    padding:18px;background:rgba(0,0,0,.88);z-index:999999;
+    backdrop-filter:blur(6px)
+  }
+  .vuBox{
+    width:min(460px,100%);position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#111827,#0f172a);
+    color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:22px;
+    padding:24px;box-shadow:0 20px 70px rgba(0,0,0,.45)
+  }
+  .vuGlow1,.vuGlow2{
+    position:absolute;border-radius:999px;filter:blur(28px);opacity:.45;pointer-events:none
+  }
+  .vuGlow1{width:180px;height:180px;top:-70px;right:-50px;background:#2563eb}
+  .vuGlow2{width:160px;height:160px;left:-50px;bottom:-70px;background:#f6c10a}
+  .vuIcon{
+    width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#f6c10a,#ffd84d);color:#111;font-size:30px;font-weight:800;
+    box-shadow:0 10px 30px rgba(246,193,10,.28);margin-bottom:14px;position:relative;z-index:1
+  }
+  .vuTitle{margin:0 0 8px;color:#fff;font-size:26px;font-weight:800;position:relative;z-index:1}
+  .vuText{margin:0 0 16px;color:rgba(255,255,255,.88);font-size:14px;line-height:1.55;position:relative;z-index:1}
+  .vuTag{
+    display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+    color:#fff;font-size:12px;font-weight:700;margin-bottom:16px;position:relative;z-index:1
+  }
+  .vuBtn{
+    width:100%;padding:14px 16px;border-radius:14px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#f6c10a,#ffd84d);color:#111;font-size:16px;font-weight:800;
+    box-shadow:0 12px 30px rgba(246,193,10,.26);position:relative;z-index:1
+  }
+  .vuBtn:hover{filter:brightness(1.03)}
+  .vuNote{margin-top:10px;color:rgba(255,255,255,.72);font-size:12px;text-align:center;position:relative;z-index:1}
+</style>
+</head>
+<body>
+
+<div id="versionUpdateModal" class="vuWrap">
+  <div class="vuBox">
+    <div class="vuGlow1"></div>
+    <div class="vuGlow2"></div>
+    <div class="vuIcon">↻</div>
+    <h3 class="vuTitle">New Version Available</h3>
+    <p class="vuText">A new update is ready. Please update now to continue using the latest Admin Panel.</p>
+    <div class="vuTag">Mandatory Update</div>
+    <button id="btnVersionUpdate" class="vuBtn" type="button">Update Now</button>
+    <div class="vuNote">The page will open only after update.</div>
+  </div>
+</div>
+
+<div id="appRoot" style="display:none;">
+<div class="wrap">
+<div class="topLogo" id="toplogo">
+  <img src="toplogo.png" alt="Logo">
+</div>
+  <h2>Admin Panel — Full Control</h2>
+
+  <div class="card" id="mainCard" style="display:none">
+    <h3>Dashboard</h3>
+    <div class="gridCards">
+      <div class="dcard"><div class="t">Total</div><div class="n" id="dTotal">0</div><div class="s">Current filter results</div></div>
+      <div class="dcard"><div class="t">NEW</div><div class="n" id="dNew">0</div><div class="s">Need assignment</div></div>
+      <div class="dcard"><div class="t">SCHEDULED</div><div class="n" id="dScheduled">0</div><div class="s">Upcoming visits</div></div>
+      <div class="dcard"><div class="t">ASSIGNED</div><div class="n" id="dAssigned">0</div><div class="s">In progress</div></div>
+      <div class="dcard"><div class="t">CLOSED</div><div class="n" id="dClosed">0</div><div class="s">Completed</div></div>
+      <div class="dcard"><div class="t">CLOSED_NOT_DONE</div><div class="n" id="dNotDone">0</div><div class="s">Not completed</div></div>
+    </div>
+
+    <div class="sec">
+      <h3>Filters</h3>
+      <div class="row">
+        <div>
+          <label>Search (BookingID / Phone / Email / MasterID / VisitMonth)</label>
+          <input id="q" placeholder="type...">
+        </div>
+        <div>
+          <label>Plan</label>
+          <select id="plan">
+            <option value="">All</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+<option value="One Time">One Time</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="status">
+            <option value="">All</option>
+            <option value="NEW">NEW</option>
+            <option value="SCHEDULED">SCHEDULED</option>
+            <option value="ASSIGNED">ASSIGNED</option>
+            <option value="CLOSED">CLOSED</option>
+            <option value="CLOSED_NOT_DONE">CLOSED_NOT_DONE</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Team</label>
+          <select id="teamId"></select>
+          <div class="hint"></div>
+        </div>
+        <div>
+          <label>Technician</label>
+          <select id="tech"></select>
+          <div class="hint"></div>
+        </div>
+        <div>
+          <label>Date From / Date To</label>
+          <div class="row" style="grid-template-columns:1fr 1fr;gap:10px">
+            <input id="dateFrom" placeholder="yyyy-mm-dd or dd/mm/yyyy">
+            <input id="dateTo" placeholder="yyyy-mm-dd or dd/mm/yyyy">
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn2" type="button" id="btnLoad">🔄 Load</button>
+        <button class="btn2" type="button" id="btnExport">⬇️ CSV Export</button>
+        <button class="btn2" type="button" id="btnLogout">🚪 Logout</button>
+      </div>
+
+      <div class="hint" id="countHint"></div>
+
+      <div style="overflow:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>BookingID</th>
+              <th>Plan</th>
+              <th>Status</th>
+              <th>Team</th>
+              <th>Date/Slot</th>
+              <th>Customer</th>
+              <th>Assigned</th>
+              <th>Master / Visit</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+  <div class="box">
+    <div class="loginLogo"><img src="logo.png" alt="Logo"></div>
+    <h3>Admin Login</h3>
+    <label>User ID</label>
+    <input id="u" placeholder="">
+    <label>Password</label>
+    <input id="p" type="password" placeholder="">
+    <button id="btnLogin">Login</button>
+    <div class="hint" id="loginHint"></div>
+  </div>
+</div>
+
+<!-- DETAILS MODAL -->
+<div class="modal" id="detailsModal" onclick="if(event.target.id==='detailsModal')closeDetails()">
+  <div class="box">
+    <div class="dvTop">
+      <div class="dvId" id="dvTitle">Booking Details</div>
+      <div class="dvBadges" id="dvBadges"></div>
+    </div>
+
+    <div class="dvGrid">
+      <div class="dvCard">
+        <h4>Customer & Service</h4>
+        <div class="kv" id="detailsKV1"></div>
+      </div>
+      <div class="dvCard">
+        <h4>Assignment & Status</h4>
+        <div class="kv" id="detailsKV2"></div>
+      </div>
+    </div>
+
+    <div class="dvCard" style="margin-top:10px">
+      <h4>Photos</h4>
+      <div class="muted" id="photoHint">If photos are uploaded, they will appear here.</div>
+      <div class="pgrid" id="photoGrid"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn2" type="button" onclick="closeDetails()">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal" onclick="if(event.target.id==='editModal')closeEdit()">
+  <div class="box">
+    <h3>Edit Booking</h3>
+
+    <div class="two">
+      <div>
+        <label>Booking ID</label>
+        <input id="eBookingId" class="mono" readonly>
+      </div>
+      <div>
+        <label>Status</label>
+        <select id="eStatus">
+          <option value="NEW">NEW</option>
+          <option value="SCHEDULED">SCHEDULED</option>
+          <option value="ASSIGNED">ASSIGNED</option>
+          <option value="CLOSED">CLOSED</option>
+          <option value="CLOSED_NOT_DONE">CLOSED_NOT_DONE</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="two">
+      <div>
+        <label>Date</label>
+        <input id="eDate" placeholder="yyyy-mm-dd or dd/mm/yyyy">
+      </div>
+      <div>
+        <label>Slot</label>
+        <input id="eSlot" placeholder="e.g. 6:00 PM - 7:00 PM">
+      </div>
+    </div>
+
+    <div class="two">
+      <div>
+        <label>Team</label>
+        <select id="eTeam"></select>
+      </div>
+      <div>
+        <label>Technician</label>
+        <select id="eTech"></select>
+      </div>
+    </div>
+
+    <label>Admin Note</label>
+    <textarea id="eNote" placeholder="Admin note..."></textarea>
+
+    <div class="actions">
+      <button type="button" id="btnSaveEdit">💾 Save</button>
+      <button class="btn2" type="button" onclick="closeEdit()">Cancel</button>
+    </div>
+
+    <div class="hint" id="editHint"></div>
+  </div>
+</div>
+</div>
+
+<script>
+const VERSION_FILE = "version.json";
+const VERSION_KEY = "site_version_seen";
+
+function showVersionedApp(){
+  $("appRoot").style.display = "block";
+  document.body.style.overflow = "auto";
+}
+function showMandatoryVersionUpdate(latestVersion){
+  $("versionUpdateModal").style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  history.pushState(null, "", location.href);
+  window.addEventListener("popstate", function (){
+    history.pushState(null, "", location.href);
+    $("versionUpdateModal").style.display = "flex";
+    document.body.style.overflow = "hidden";
+  });
+
+  $("btnVersionUpdate").onclick = function (){
+    localStorage.setItem(VERSION_KEY, latestVersion || "");
+    location.replace(location.pathname + "?v=" + Date.now());
+  };
+}
+async function checkVersionBeforeOpen(){
+  try{
+    const res = await fetch(VERSION_FILE + "?t=" + Date.now(), { cache:"no-store" });
+    const data = await res.json();
+
+    const latestVersion = String(data.version || "").trim();
+    const seenVersion = localStorage.getItem(VERSION_KEY) || "";
+
+    if(!latestVersion){
+      showVersionedApp();
+      return;
+    }
+    if(!seenVersion){
+      localStorage.setItem(VERSION_KEY, latestVersion);
+      showVersionedApp();
+      return;
+    }
+    if(latestVersion !== seenVersion){
+      showMandatoryVersionUpdate(latestVersion);
+      return;
+    }
+    showVersionedApp();
+  }catch(e){
+    showVersionedApp();
+  }
+}
+
+const API_URL = "https://script.google.com/macros/s/AKfycby6J1PUZdgXAh-T7GVN5SJtw3lM_JeFUyDtj6Zk71ppOik-4wTkqW6zFyswwagNRs76UQ/exec";
+const $ = (id)=>document.getElementById(id);
+
+async function postJSON(payload){
+  const res = await fetch(API_URL, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload)
+  });
+  const txt = await res.text();
+  try{ return JSON.parse(txt); }catch(e){ throw new Error("Non-JSON:\n"+txt.slice(0,250)); }
+}
+
+let TOKEN = sessionStorage.getItem("adm_token") || "";
+let currentItems = [];
+let lastDetails = null;
+/* ✅ FAST: Details cache */
+const DETAILS_CACHE = {}; // bookingId -> booking details
+
+let META_TEAMS = [];
+let META_TECH_BY_TEAM = {};
+
+function showLogin(){
+  $("loginModal").style.display="flex";
+  $("mainCard").style.display="none";
+}
+function showMain(){
+  $("loginModal").style.display="none";
+  $("mainCard").style.display="block";
+}
+
+async function loadMeta(){
+  const out = await postJSON({ action:"adminMeta", token:TOKEN });
+  if(!out || !out.ok) throw new Error(out?.error || "Meta failed");
+  META_TEAMS = out.teams || [];
+  META_TECH_BY_TEAM = out.techByTeam || {};
+}
+
+function loadTeamDropdown(){
+  const tsel = $("teamId");
+  tsel.innerHTML = `<option value="">All Teams</option>` +
+    META_TEAMS.map(t=>`<option value="${t.teamId}">${t.teamName} (${t.teamId})</option>`).join("");
+}
+
+function getTechNamesForTeam(teamId){
+  let names = [];
+  if(!teamId){
+    Object.keys(META_TECH_BY_TEAM).forEach(k=>{
+      (META_TECH_BY_TEAM[k]||[]).forEach(t=>names.push(String(t.name||"").trim()));
+    });
+  }else{
+    (META_TECH_BY_TEAM[teamId]||[]).forEach(t=>names.push(String(t.name||"").trim()));
+  }
+  const seen={}, uniq=[];
+  names.forEach(n=>{ if(n && !seen[n]){ seen[n]=1; uniq.push(n);} });
+  return uniq;
+}
+
+function rebuildTechDropdown(){
+  const teamId = $("teamId").value.trim();
+  const list = getTechNamesForTeam(teamId);
+  $("tech").innerHTML = `<option value="">All Technicians</option>` +
+    list.map(n=>`<option value="${n}">${n}</option>`).join("");
+}
+
+function fillEditTeam(){
+  $("eTeam").innerHTML =
+    `<option value="">(Keep same)</option>` +
+    META_TEAMS.map(t=>`<option value="${t.teamId}">${t.teamName} (${t.teamId})</option>`).join("");
+}
+
+function fillEditTech(){
+  const teamId = $("eTeam").value.trim();
+  let list = [];
+  if(!teamId && lastDetails){
+    const curTeam = String(lastDetails.TeamId||"").trim();
+    list = getTechNamesForTeam(curTeam);
+  }else{
+    list = getTechNamesForTeam(teamId);
+  }
+  $("eTech").innerHTML = `<option value="">(Keep same)</option>` +
+    list.map(n=>`<option value="${n}">${n}</option>`).join("");
+}
+
+$("teamId").addEventListener("change", ()=>{ rebuildTechDropdown(); });
+$("eTeam").addEventListener("change", ()=>{ fillEditTech(); });
+
+$("btnLogin").onclick = async ()=>{
+  try{
+    $("btnLogin").disabled = true;
+    $("loginHint").textContent = "Logging in...";
+    const out = await postJSON({ action:"adminLogin", username:$("u").value.trim(), password:$("p").value.trim() });
+    if(!out || !out.ok) throw new Error(out?.error || "Login failed");
+
+    TOKEN = out.token;
+    sessionStorage.setItem("adm_token", TOKEN);
+
+    await loadMeta();
+    loadTeamDropdown();
+    rebuildTechDropdown();
+
+    $("loginHint").textContent = "";
+    showMain();
+    await loadList();
+  }catch(e){
+    $("loginHint").textContent = String(e);
+  }finally{
+    $("btnLogin").disabled = false;
+  }
+};
+
+$("btnLogout").onclick = ()=>{
+  sessionStorage.removeItem("adm_token");
+  TOKEN="";
+  showLogin();
+};
+
+function setDashboard(items){
+  const total = items.length;
+  let nNew=0,nSch=0,nAs=0,nCl=0,nNd=0;
+  items.forEach(x=>{
+    const s = String(x.status||"").trim();
+    if(s==="NEW") nNew++;
+    else if(s==="SCHEDULED") nSch++;
+    else if(s==="ASSIGNED") nAs++;
+    else if(s==="CLOSED") nCl++;
+    else if(s==="CLOSED_NOT_DONE") nNd++;
+  });
+  $("dTotal").textContent = total;
+  $("dNew").textContent = nNew;
+  $("dScheduled").textContent = nSch;
+  $("dAssigned").textContent = nAs;
+  $("dClosed").textContent = nCl;
+  $("dNotDone").textContent = nNd;
+}
+
+function closeDetails(){ $("detailsModal").style.display="none"; }
+function closeEdit(){ $("editModal").style.display="none"; $("editHint").textContent=""; }
+
+/* ✅ helpers */
+function safeText(v){
+  const s = String(v===null||v===undefined?"":v);
+  return s;
+}
+function statusBadgeClass(st){
+  const s = String(st||"").trim();
+  if(s==="CLOSED") return "ok";
+  if(s==="CLOSED_NOT_DONE") return "danger";
+  if(s==="NEW") return "warn";
+  if(s==="SCHEDULED") return "warn";
+  if(s==="ASSIGNED") return "ok";
+  return "";
+}
+function mapLinkHtml(url){
+  const u = String(url||"").trim();
+  if(!u) return "-";
+  return `<a href="${u}" target="_blank" rel="noopener">Open Map</a>`;
+}
+function photoItemHtml(title, url){
+  const u = String(url||"").trim();
+  if(!u) return "";
+  return `
+    <div class="pitem">
+      <div class="pt">${title}</div>
+      <a href="${u}" target="_blank" rel="noopener">
+        <img class="thumb" src="${u}" alt="${title}" onerror="this.style.display='none'">
+      </a>
+      <div class="plink">
+        <span class="muted">Preview</span>
+        <a href="${u}" target="_blank" rel="noopener">Open</a>
+      </div>
+    </div>
+  `;
+}
+
+function renderDetailsView(b){
+  const bookingId = safeText(b.BookingID||"-");
+  const plan = safeText(b.Plan||"-");
+  const st = safeText(b.Status||"-");
+  const team = safeText((b.TeamName||"-") + (b.TeamId?(" ("+b.TeamId+")"):""));
+  const dateSlot = safeText((b.Date||"-") + (b.Slot?(" | "+b.Slot):""));
+  const visit = safeText((b.ParentBookingID||"-") + " | " + (b.VisitNo?("V"+b.VisitNo):"-") + " | " + (b.VisitMonth||"-"));
+
+  $("dvTitle").textContent = "Booking Details — " + bookingId;
+
+  $("dvBadges").innerHTML = `
+    <span class="badge ${statusBadgeClass(st)}"><strong>Status:</strong> ${st}</span>
+    <span class="badge"><strong>Plan:</strong> ${plan}</span>
+    <span class="badge"><strong>Team:</strong> ${team}</span>
+    <span class="badge"><strong>Visit:</strong> <span class="mono">${visit}</span></span>
+  `;
+
+  $("detailsKV1").innerHTML = `
+    <div>Service</div><div>${safeText(b.Service||"-")}</div>
+    <div>Date / Slot</div><div>${dateSlot}</div>
+    <div>Customer</div><div>${safeText(b.Name||"-")}<br><span class="mono">${safeText(b.Phone||"")}</span></div>
+    <div>Email</div><div class="mono">${safeText(b.Email||"-")}</div>
+    <div>Address</div><div>${safeText(b.Address||"-")}<br><span class="mono">${safeText(b.Pincode||"")}</span></div>
+    <div>Location</div><div>${mapLinkHtml(b.LocationLink)}</div>
+    <div>Problem</div><div>${safeText(b.Problem||"-")}</div>
+  `;
+
+  const fb = (b.FeedbackRating||b.FeedbackComment)
+    ? `${safeText(b.FeedbackRating||"-")} | ${safeText(b.FeedbackRecommend||"-")}<br>${safeText(b.FeedbackComment||"")}`
+    : "-";
+
+  $("detailsKV2").innerHTML = `
+    <div>Assigned</div><div>${safeText(b.AssignedTo||"-")}<br><span class="mono">${safeText(b.AssignedPhone||"")}</span></div>
+    <div>Manager</div><div class="mono">${safeText(b.ManagerEmail||"-")}<br>${safeText(b.ManagerPhone||"-")}</div>
+    <div>Admin Note</div><div>${safeText(b.AdminNote||"-")}</div>
+    <div>Work Done</div><div>${safeText(b.WorkDone||"-")}</div>
+    <div>Close Reason</div><div>${safeText(b.CloseReason||"-")}</div>
+    <div>Estimate / Paid</div><div>${safeText(b.EstimateAmount||"-")} / ${safeText(b.PaidAmount||"-")} (${safeText(b.PaymentMode||"-")})</div>
+    <div>UPI Txn</div><div class="mono">${safeText(b.UpiTxnId||"-")}</div>
+    <div>Feedback</div><div>${fb}</div>
+  `;
+
+  const photosHtml = []
+    .concat(photoItemHtml("Before 1", b.PhotoBefore1URL))
+    .concat(photoItemHtml("Before 2", b.PhotoBefore2URL))
+    .concat(photoItemHtml("Before 3", b.PhotoBefore3URL))
+    .concat(photoItemHtml("After 1", b.PhotoAfter1URL))
+    .concat(photoItemHtml("After 2", b.PhotoAfter2URL))
+    .concat(photoItemHtml("After 3", b.PhotoAfter3URL))
+    .concat(photoItemHtml("Payment", b.PhotoPaymentURL))
+    .filter(Boolean)
+    .join("");
+
+  $("photoGrid").innerHTML = photosHtml || `<div class="muted">No photos uploaded.</div>`;
+  $("photoHint").textContent = photosHtml ? "Click any photo to open in new tab." : "If photos are uploaded, they will appear here.";
+}
+
+async function openDetails(bid){
+  if(DETAILS_CACHE[bid]){
+    renderDetailsView(DETAILS_CACHE[bid]);
+    $("detailsModal").style.display="flex";
+    return;
+  }
+
+  const out = await postJSON({ action:"adminDetails", token:TOKEN, bookingId:bid });
+  if(!out || !out.ok) throw new Error(out?.error || "Details failed");
+
+  DETAILS_CACHE[bid] = out.booking || {};
+  renderDetailsView(DETAILS_CACHE[bid]);
+  $("detailsModal").style.display="flex";
+}
+async function openEdit(bid){
+  if(DETAILS_CACHE[bid]){
+    lastDetails = DETAILS_CACHE[bid];
+  }else{
+    const out = await postJSON({ action:"adminDetails", token:TOKEN, bookingId:bid });
+    if(!out || !out.ok) throw new Error(out?.error || "Details failed");
+    lastDetails = out.booking || {};
+    DETAILS_CACHE[bid] = lastDetails;
+  }
+
+  $("eBookingId").value = lastDetails.BookingID || bid;
+  $("eStatus").value = lastDetails.Status || "NEW";
+  $("eDate").value = lastDetails.Date || "";
+  $("eSlot").value = lastDetails.Slot || "";
+  $("eNote").value = lastDetails.AdminNote || "";
+
+  fillEditTeam();
+  $("eTeam").value = "";
+  fillEditTech();
+  $("eTech").value = "";
+
+  $("editModal").style.display="flex";
+}
+
+async function saveEdit(){
+  const payload = {
+    action:"adminUpdate",
+    token: TOKEN,
+    bookingId: $("eBookingId").value.trim(),
+    status: $("eStatus").value,
+    date: $("eDate").value.trim(),
+    slot: $("eSlot").value.trim(),
+    adminNote: $("eNote").value.trim(),
+    teamId: $("eTeam").value.trim(),
+    technicianName: $("eTech").value.trim()
+  };
+  const out = await postJSON(payload);
+  if(!out || !out.ok) throw new Error(out?.error || "Update failed");
+}
+
+$("btnSaveEdit").onclick = async ()=>{
+  try{
+    $("btnSaveEdit").disabled = true;
+    $("editHint").textContent = "Saving...";
+    await saveEdit();
+    $("editHint").textContent = "✅ Saved";
+    closeEdit();
+    await loadList();
+  }catch(e){
+    $("editHint").textContent = "❌ " + String(e);
+  }finally{
+    $("btnSaveEdit").disabled = false;
+  }
+};
+
+function rowHtml(x){
+  const master = (x.parentBookingId ? x.parentBookingId : "-");
+  const visit = (x.visitNo ? ("V"+x.visitNo) : "-");
+  const vm = (x.visitMonth ? x.visitMonth : "-");
+  return `
+    <tr>
+      <td class="mono">${x.bookingId}</td>
+      <td>${x.plan||""}</td>
+      <td><span class="pill">${x.status||""}</span></td>
+      <td>${(x.teamName||"") + (x.teamId?(" ("+x.teamId+")"):"")}</td>
+      <td>${(x.date||"-") + (x.slot?(" | "+x.slot):"")}</td>
+      <td>${(x.customer||"-")}<br><span class="mono">${x.phone||""}</span></td>
+      <td>${(x.assignedTo||"-")}<br><span class="mono">${x.assignedPhone||""}</span></td>
+      <td class="mono">${master}<br>${visit} | ${vm}</td>
+      <td>
+        <button class="btn2 actDetails" type="button" style="width:auto;margin:0" data-bid="${x.bookingId}">📄 Details</button>
+        <button class="btn2 actEdit" type="button" style="width:auto;margin:0" data-bid="${x.bookingId}">⚙️ Edit</button>
+      </td>
+    </tr>
+  `;
+}
+
+async function loadList(){
+  const out = await postJSON({
+    action:"adminList",
+    token: TOKEN,
+    q: $("q").value.trim(),
+    plan: $("plan").value,
+    status: $("status").value,
+    teamId: $("teamId").value.trim(),
+    tech: $("tech").value.trim(),
+    dateFrom: $("dateFrom").value.trim(),
+    dateTo: $("dateTo").value.trim()
+  });
+  if(!out || !out.ok) throw new Error(out?.error || "List failed");
+
+  const items = out.items || [];
+  currentItems = items;
+
+  setDashboard(items);
+
+  $("countHint").textContent = "Total: " + items.length;
+  $("tb").innerHTML = items.map(rowHtml).join("") || `<tr><td colspan="9">No data</td></tr>`;
+
+/* ✅ FAST: Prefetch first few details in background */
+setTimeout(()=>{
+  (items.slice(0, 8) || []).forEach(it=>{
+    const bid = it.bookingId;
+    if(!bid || DETAILS_CACHE[bid]) return;
+    postJSON({ action:"adminDetails", token:TOKEN, bookingId:bid })
+      .then(out=>{
+        if(out && out.ok) DETAILS_CACHE[bid] = out.booking || {};
+      })
+      .catch(()=>{});
+  });
+}, 300);
+
+}
+
+$("btnLoad").onclick = async ()=>{
+  try{ $("btnLoad").disabled = true; await loadList(); }
+  catch(e){ alert(String(e)); }
+  finally{ $("btnLoad").disabled = false; }
+};
+
+function csvEscape(v){
+  const s = String(v===null||v===undefined?"":v);
+  if(/[",\n]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+  return s;
+}
+function toCSV(items){
+  const cols = [
+    "bookingId","plan","status","teamId","teamName","date","slot",
+    "customer","phone","email","assignedTo","assignedPhone",
+    "parentBookingId","visitNo","visitMonth"
+  ];
+  const header = cols.join(",");
+  const rows = items.map(x=>cols.map(c=>csvEscape(x[c]||"")).join(","));
+  return [header].concat(rows).join("\n");
+}
+$("btnExport").onclick = ()=>{
+  const csv = toCSV(currentItems || []);
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "admin_export.csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+};
+
+/** ✅ FIX: Details/Edit buttons always work (re-render safe) + errors never silent */
+$("tb").addEventListener("click", async (e)=>{
+  const btn = e.target.closest("button");
+  if(!btn) return;
+
+  const bid = btn.getAttribute("data-bid") || "";
+  if(!bid) return;
+
+  try{
+    if(btn.classList.contains("actDetails")){
+      await openDetails(bid);
+      return;
+    }
+    if(btn.classList.contains("actEdit")){
+      await openEdit(bid);
+      return;
+    }
+  }catch(err){
+    alert(String(err));
+  }
+});
+
+/* ✅ AUTO-LOAD on filter change (no need to click Load) */
+let __loadTimer = null;
+function scheduleAutoLoad(){
+  if(!TOKEN) return;
+  if(!$("mainCard") || $("mainCard").style.display === "none") return;
+  if(__loadTimer) clearTimeout(__loadTimer);
+  __loadTimer = setTimeout(()=>{
+    loadList().catch(()=>{});
+  }, 450);
+}
+
+["plan","status","teamId","tech","dateFrom","dateTo"].forEach(id=>{
+  $(id).addEventListener("change", scheduleAutoLoad);
+  $(id).addEventListener("input", scheduleAutoLoad);
+});
+$("q").addEventListener("input", scheduleAutoLoad);
+
+(async function init(){
+  await checkVersionBeforeOpen();
+  if(TOKEN){
+/* ✅ FAST: keep API warm (reduce cold start delay) */
+setInterval(()=>{ postJSON({ action:"adminPing", token:TOKEN }).catch(()=>{}); }, 120000);
+    showMain();
+    loadMeta().then(()=>{
+      loadTeamDropdown();
+      rebuildTechDropdown();
+      return loadList();
+    }).catch(()=>showLogin());
+  }else{
+    showLogin();
+  }
+})();
+</script>
+</body>
+</html>
