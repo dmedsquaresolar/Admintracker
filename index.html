@@ -310,12 +310,13 @@ overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
       <div>
         <label>Status</label>
         <select id="eStatus">
-          <option value="NEW">NEW</option>
-          <option value="SCHEDULED">SCHEDULED</option>
-          <option value="ASSIGNED">ASSIGNED</option>
-          <option value="CLOSED">CLOSED</option>
-          <option value="CLOSED_NOT_DONE">CLOSED_NOT_DONE</option>
-        </select>
+  <option value="NEW">NEW</option>
+  <option value="SCHEDULED">SCHEDULED</option>
+  <option value="ASSIGNED">ASSIGNED</option>
+  <option value="CLOSED">CLOSED</option>
+  <option value="CLOSED_NOT_DONE">CLOSED_NOT_DONE</option>
+  <option value="CANCELLED">CANCELLED</option>
+</select>
       </div>
     </div>
 
@@ -405,7 +406,7 @@ async function checkVersionBeforeOpen(){
   }
 }
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwJhb5tvrSBcmIt13fIcNT3h5xI-TDZlhvJc2lMg-onEcGIE7j_Cw01BImosWBEC88MPg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby6J1PUZdgXAh-T7GVN5SJtw3lM_JeFUyDtj6Zk71ppOik-4wTkqW6zFyswwagNRs76UQ/exec";
 const $ = (id)=>document.getElementById(id);
 
 async function postJSON(payload){
@@ -677,16 +678,17 @@ async function openEdit(bid){
 
 async function saveEdit(){
   const payload = {
-    action:"adminUpdate",
-    token: TOKEN,
-    bookingId: $("eBookingId").value.trim(),
-    status: $("eStatus").value,
-    date: $("eDate").value.trim(),
-    slot: $("eSlot").value.trim(),
-    adminNote: $("eNote").value.trim(),
-    teamId: $("eTeam").value.trim(),
-    technicianName: $("eTech").value.trim()
-  };
+  action:"adminUpdate",
+  token: TOKEN,
+  bookingId: $("eBookingId").value.trim(),
+  patch: {
+    Status: $("eStatus").value,
+    Date: $("eDate").value.trim(),
+    Slot: $("eSlot").value.trim(),
+    AdminNote: $("eNote").value.trim(),
+    AssignedTo: $("eTech").value.trim()
+  }
+};
   const out = await postJSON(payload);
   if(!out || !out.ok) throw new Error(out?.error || "Update failed");
 }
