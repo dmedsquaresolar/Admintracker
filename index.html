@@ -39,15 +39,34 @@
   width:100%;
   display:flex;
   justify-content:center;
-  margin:12px 0 10px 0;
+  align-items:center;
+  margin:16px 0 14px 0;
+}
+.topLogo .logoShell{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:10px 16px;
+  border-radius:22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:1px solid rgba(246,193,10,.22);
+  box-shadow:0 14px 40px rgba(246,193,10,.12), inset 0 1px 0 rgba(255,255,255,.05);
 }
 .topLogo img{
-  height:75px;
+  max-height:76px;
   width:auto;
+  max-width:min(100%,320px);
   display:block;
 }
 
-#topLogo{display:none;}
+.pwWrap{position:relative}
+.pwWrap input{padding-right:92px}
+.pwToggle{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  width:auto;padding:8px 12px;margin-top:0;border-radius:10px;
+  background:#f3f4f6;color:#111;border:1px solid #d1d5db;cursor:pointer;font-weight:700
+}
+.pwToggle:hover{background:#e5e7eb}
 
   .btn2{background:#f3f4f6;color:#111;border:1px solid #d1d5db;margin-top:8px}
   .hint{font-size:12px;color:#374151;margin-top:6px;line-height:1.4}
@@ -138,296 +157,6 @@ overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
   }
   .vuBtn:hover{filter:brightness(1.03)}
   .vuNote{margin-top:10px;color:rgba(255,255,255,.72);font-size:12px;text-align:center;position:relative;z-index:1}
-
-
-  /* ✅ ATTRACTIVE UI UPGRADE - theme same: black + white + yellow */
-  :root{
-    --brand-yellow:#f6c10a;
-    --brand-black:#000000;
-    --soft-bg:#f8fafc;
-    --line:#e5e7eb;
-    --ink:#111827;
-    --muted:#6b7280;
-    --blue:#2563eb;
-    --green:#059669;
-    --red:#dc2626;
-    --orange:#d97706;
-  }
-
-  body{
-    background:
-      radial-gradient(circle at top left, rgba(246,193,10,.10), transparent 28%),
-      radial-gradient(circle at top right, rgba(37,99,235,.08), transparent 24%),
-      #000000;
-    min-height:100vh;
-  }
-
-  .wrap{
-    animation: pageFadeIn .35s ease both;
-  }
-
-  @keyframes pageFadeIn{
-    from{opacity:0;transform:translateY(8px)}
-    to{opacity:1;transform:translateY(0)}
-  }
-
-  .topLogo img,
-  .loginLogo img{
-    filter: drop-shadow(0 8px 18px rgba(246,193,10,.20));
-  }
-
-  h2{
-    color:#fff;
-    text-align:center;
-    font-size:28px;
-    letter-spacing:.2px;
-    margin:6px 0 16px;
-    text-shadow:0 10px 24px rgba(0,0,0,.35);
-  }
-
-  .card{
-    border-radius:22px;
-    border:1px solid rgba(255,255,255,.18);
-    box-shadow:0 18px 50px rgba(0,0,0,.20);
-  }
-
-  .card h3{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:18px;
-    font-weight:900;
-  }
-
-  .card h3::before{
-    content:"";
-    width:9px;
-    height:24px;
-    border-radius:999px;
-    background:linear-gradient(180deg,var(--brand-yellow),#ffe174);
-    display:inline-block;
-  }
-
-  .gridCards{
-    margin-top:12px;
-  }
-
-  .dcard{
-    border-radius:18px;
-    background:linear-gradient(180deg,#ffffff,#f9fafb);
-    border:1px solid #edf0f4;
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    position:relative;
-    overflow:hidden;
-  }
-
-  .dcard::after{
-    content:"";
-    position:absolute;
-    inset:auto -25px -35px auto;
-    width:80px;
-    height:80px;
-    border-radius:999px;
-    background:rgba(246,193,10,.16);
-  }
-
-  .dcard:hover{
-    transform:translateY(-3px);
-    box-shadow:0 14px 30px rgba(0,0,0,.14);
-    border-color:rgba(246,193,10,.55);
-  }
-
-  .dcard .t{
-    text-transform:uppercase;
-    letter-spacing:.55px;
-    font-weight:800;
-  }
-
-  .dcard .n{
-    color:#0f172a;
-    font-size:28px;
-    line-height:1.1;
-  }
-
-  .sec{
-    background:#ffffff;
-    border-radius:18px;
-    border:1px solid #eef2f7;
-    padding:14px;
-  }
-
-  label{
-    font-weight:800;
-    color:#374151;
-  }
-
-  input,select,textarea{
-    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
-  }
-
-  input:hover,select:hover,textarea:hover{
-    border-color:#cbd5e1;
-  }
-
-  input:focus,select:focus,textarea:focus{
-    transform:translateY(-1px);
-  }
-
-  button{
-    border-radius:12px;
-    transition:transform .14s ease, box-shadow .14s ease, filter .14s ease;
-    box-shadow:0 8px 18px rgba(246,193,10,.22);
-  }
-
-  button:hover:not(:disabled){
-    transform:translateY(-1px);
-    filter:brightness(1.02);
-    box-shadow:0 12px 24px rgba(246,193,10,.28);
-  }
-
-  button:active:not(:disabled){
-    transform:translateY(0) scale(.99);
-  }
-
-  .btn2{
-    box-shadow:none;
-    border:1px solid #d8dee8;
-    background:linear-gradient(180deg,#ffffff,#f3f4f6);
-  }
-
-  .btn2:hover:not(:disabled){
-    border-color:var(--brand-yellow);
-    box-shadow:0 8px 18px rgba(0,0,0,.08);
-  }
-
-  #btnLogin,#btnSaveEdit{
-    background:linear-gradient(135deg,#f6c10a,#ffe174);
-  }
-
-  #countHint{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 12px;
-    border-radius:999px;
-    background:#fffbeb;
-    border:1px solid #fde68a;
-    font-weight:800;
-    color:#713f12;
-  }
-
-  table{
-    background:#fff;
-    border-radius:16px;
-    overflow:hidden;
-    box-shadow:0 8px 22px rgba(0,0,0,.06);
-  }
-
-  thead th{
-    position:sticky;
-    top:0;
-    z-index:2;
-    background:#111827;
-    color:#fff;
-    border-color:#1f2937;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.45px;
-    white-space:nowrap;
-  }
-
-  tbody tr{
-    transition:background .13s ease, transform .13s ease;
-  }
-
-  tbody tr:nth-child(even){
-    background:#fcfcfd;
-  }
-
-  tbody tr:hover{
-    background:#fffbeb;
-  }
-
-  td{
-    color:#111827;
-  }
-
-  .pill{
-    font-weight:900;
-    border:none;
-    padding:5px 10px;
-  }
-
-  .pill-new{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
-  .pill-scheduled{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
-  .pill-assigned{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
-  .pill-closed{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
-  .pill-closed_not_done{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
-  .pill-cancelled{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
-
-  .modal{
-    background:rgba(0,0,0,.70);
-    backdrop-filter:blur(6px);
-    z-index:99999;
-  }
-
-  .box{
-    border-radius:22px;
-    border:1px solid rgba(255,255,255,.20);
-    box-shadow:0 24px 80px rgba(0,0,0,.42);
-    animation: modalPop .18s ease both;
-  }
-
-  @keyframes modalPop{
-    from{opacity:0;transform:scale(.96) translateY(8px)}
-    to{opacity:1;transform:scale(1) translateY(0)}
-  }
-
-  #detailsModal .box{
-    width:min(900px,100%);
-  }
-
-  #editModal .box{
-    width:min(720px,100%);
-  }
-
-  .dvCard,.pitem{
-    border-radius:16px;
-    background:linear-gradient(180deg,#fff,#fbfdff);
-  }
-
-  .dvCard h4{
-    font-size:14px;
-    font-weight:900;
-  }
-
-  .badge{
-    font-weight:700;
-  }
-
-  .thumb{
-    transition:transform .16s ease, box-shadow .16s ease;
-  }
-
-  .thumb:hover{
-    transform:scale(1.02);
-    box-shadow:0 12px 24px rgba(0,0,0,.16);
-  }
-
-  .actions{
-    align-items:center;
-  }
-
-  @media(max-width:700px){
-    .wrap{padding:14px 10px}
-    h2{font-size:22px}
-    .card{padding:12px;border-radius:18px}
-    .sec{padding:12px}
-    th,td{font-size:11px;padding:7px}
-    .actions button{width:100%}
-    .gridCards{grid-template-columns:1fr 1fr}
-  }
-
 </style>
 </head>
 <body>
@@ -448,9 +177,10 @@ overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
 <div id="appRoot" style="display:none;">
 <div class="wrap">
 <div class="topLogo" id="toplogo">
-  <img src="toplogo.png" alt="Logo">
+  <div class="logoShell">
+    <img src="toplogo.png" alt="Logo">
+  </div>
 </div>
-  <h2>Admin Panel — Full Control</h2>
 
   <div class="card" id="mainCard" style="display:none">
     <h3>Dashboard</h3>
@@ -550,7 +280,10 @@ overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
     <label>User ID</label>
     <input id="u" placeholder="">
     <label>Password</label>
-    <input id="p" type="password" placeholder="">
+    <div class="pwWrap">
+      <input id="p" type="password" placeholder="">
+      <button id="togglePassword" class="pwToggle" type="button">Show</button>
+    </div>
     <button id="btnLogin">Login</button>
     <div class="hint" id="loginHint"></div>
   </div>
@@ -783,7 +516,7 @@ function fillEditTech(){
 $("teamId").addEventListener("change", ()=>{ rebuildTechDropdown(); });
 $("eTeam").addEventListener("change", ()=>{ fillEditTech(); });
 
-$("btnLogin").onclick = async ()=>{
+async function doLogin(){
   try{
     $("btnLogin").disabled = true;
     $("loginHint").textContent = "Logging in...";
@@ -805,7 +538,25 @@ $("btnLogin").onclick = async ()=>{
   }finally{
     $("btnLogin").disabled = false;
   }
+}
+
+$("btnLogin").onclick = doLogin;
+$("togglePassword").onclick = ()=>{
+  const ip = $("p");
+  const btn = $("togglePassword");
+  const isPass = ip.type === "password";
+  ip.type = isPass ? "text" : "password";
+  btn.textContent = isPass ? "Hide" : "Show";
 };
+
+["u","p"].forEach(id=>{
+  $(id).addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){
+      e.preventDefault();
+      doLogin();
+    }
+  });
+});
 
 $("btnLogout").onclick = ()=>{
   sessionStorage.removeItem("adm_token");
@@ -1006,7 +757,7 @@ function rowHtml(x){
     <tr>
       <td class="mono">${x.bookingId}</td>
       <td>${x.plan||""}</td>
-      <td><span class="pill pill-${String(x.status||'').toLowerCase().replace(/\s+/g,'_')}">${x.status||""}</span></td>
+      <td><span class="pill">${x.status||""}</span></td>
       <td>${(x.teamName||"") + (x.teamId?(" ("+x.teamId+")"):"")}</td>
       <td>${(x.date||"-") + (x.slot?(" | "+x.slot):"")}</td>
       <td>${(x.customer||"-")}<br><span class="mono">${x.phone||""}</span></td>
