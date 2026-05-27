@@ -58,6 +58,15 @@
   max-width:min(100%,320px);
   display:block;
 }
+#toplogo{display:none;}
+.topLogo .logoShell{
+  display:flex;justify-content:center;align-items:center;
+  padding:10px 16px;border-radius:22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:1px solid rgba(246,193,10,.22);
+  box-shadow:0 14px 40px rgba(246,193,10,.12), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
 
 .pwWrap{position:relative}
 .pwWrap input{padding-right:92px}
@@ -454,10 +463,12 @@ let META_TECH_BY_TEAM = {};
 function showLogin(){
   $("loginModal").style.display="flex";
   $("mainCard").style.display="none";
+  if($("toplogo")) $("toplogo").style.display="none";
 }
 function showMain(){
   $("loginModal").style.display="none";
   $("mainCard").style.display="block";
+  if($("toplogo")) $("toplogo").style.display="flex";
 }
 
 async function loadMeta(){
