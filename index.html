@@ -42,16 +42,6 @@
   align-items:center;
   margin:16px 0 14px 0;
 }
-.topLogo .logoShell{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:10px 16px;
-  border-radius:22px;
-  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-  border:1px solid rgba(246,193,10,.22);
-  box-shadow:0 14px 40px rgba(246,193,10,.12), inset 0 1px 0 rgba(255,255,255,.05);
-}
 .topLogo img{
   max-height:76px;
   width:auto;
@@ -59,20 +49,13 @@
   display:block;
 }
 #toplogo{display:none;}
-.topLogo .logoShell{
-  display:flex;justify-content:center;align-items:center;
-  padding:10px 16px;border-radius:22px;
-  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
-  border:1px solid rgba(246,193,10,.22);
-  box-shadow:0 14px 40px rgba(246,193,10,.12), inset 0 1px 0 rgba(255,255,255,.05);
-}
-
 
 .pwWrap{position:relative}
-.pwWrap input{padding-right:92px}
+.pwWrap input{padding-right:56px}
 .pwToggle{
   position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  width:auto;padding:8px 12px;margin-top:0;border-radius:10px;
+  width:42px;height:34px;padding:0;margin-top:0;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;
   background:#f3f4f6;color:#111;border:1px solid #d1d5db;cursor:pointer;font-weight:700
 }
 .pwToggle:hover{background:#e5e7eb}
@@ -186,9 +169,7 @@ overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
 <div id="appRoot" style="display:none;">
 <div class="wrap">
 <div class="topLogo" id="toplogo">
-  <div class="logoShell">
-    <img src="toplogo.png" alt="Logo">
-  </div>
+  <img src="toplogo.png" alt="Logo">
 </div>
 
   <div class="card" id="mainCard" style="display:none">
@@ -291,7 +272,7 @@ overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.2)}
     <label>Password</label>
     <div class="pwWrap">
       <input id="p" type="password" placeholder="">
-      <button id="togglePassword" class="pwToggle" type="button">Show</button>
+      <button id="togglePassword" class="pwToggle" type="button" aria-label="Show password">👁️</button>
     </div>
     <button id="btnLogin">Login</button>
     <div class="hint" id="loginHint"></div>
@@ -557,7 +538,8 @@ $("togglePassword").onclick = ()=>{
   const btn = $("togglePassword");
   const isPass = ip.type === "password";
   ip.type = isPass ? "text" : "password";
-  btn.textContent = isPass ? "Hide" : "Show";
+  btn.textContent = isPass ? "🙈" : "👁️";
+  btn.setAttribute("aria-label", isPass ? "Hide password" : "Show password");
 };
 
 ["u","p"].forEach(id=>{
